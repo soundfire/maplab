@@ -1,14 +1,14 @@
-\name{hello}
-\alias{hello}
+\name{getFeeds}
+\alias{getFeeds}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-%%  ~~function to do ... ~~
+getFeeds
 }
 \description{
 %%  ~~ A concise (1-5 lines) description of what the function does. ~~
 }
 \usage{
-hello(x)
+getFeeds(x)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
