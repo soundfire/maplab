@@ -1,3 +1,5 @@
+#' @export
+#' @param myname your name. Required.
 getFeeds=function(...){
   lists=c("feed://rss.nytimes.com/services/xml/rss/nyt/World.xml",
           "feed://feeds.bbci.co.uk/news/world/rss.xml",
