@@ -13,5 +13,5 @@ getFeeds=function(...){
           "http://online.wsj.com/xml/rss/3_7085.xml",
           "http://feeds.theguardian.com/theguardian/world/rss")
   lists=gsub("feed://","http://",lists)
-  list(lists=lists)
+  list(lists=paste(lists))
 }
