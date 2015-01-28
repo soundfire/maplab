@@ -1,9 +1,9 @@
 Package: maplab
 Type: Package
-Title: What the package does (short line)
-Version: 1.0
+Title: Demo
+Version: 0.1
 Date: 2015-01-28
-Author: Who wrote it
-Maintainer: Who to complain to <yourfault@somewhere.net>
-Description: More about what it does (maybe more than one line)
-License: What license is it under?
+Author: MJM
+Maintainer: MJM <mjm1363@gmail.com>
+Description: 
+License: GNU
