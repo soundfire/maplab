@@ -1,6 +1,6 @@
 #' @export
 #' @param 
-getFeeds=function(input){
+getFeeds=function(args=input){
   load(file="R/Data.RData")
   maxTime=input[length(input)]
   lists=input[1:(length(input)-1)]
