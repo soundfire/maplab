@@ -1,7 +1,7 @@
 #' @export
 #' @param 
 getFeeds=function(input=input){
-  load(file="Data.rda")
+  load(file="data/Data.rda")
   #   maxTime=input[length(input)]
   #   lists=input[1:(length(input)-1)]
   #   lists=LIST[is.element(names(LIST),lists)]
