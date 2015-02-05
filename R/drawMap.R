@@ -1,3 +1,6 @@
+#' @export
+#' @param 
+#####################################################
 drawMap=function(input,width="100%",height="100%"){
   library(rCharts)
   library(XML)
