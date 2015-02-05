@@ -1,6 +1,6 @@
 #' @export
 #' @param 
-getFeeds=function(...){
+getFeeds=function(input=input){
   data(Data)
   #   maxTime=input[length(input)]
   #   lists=input[1:(length(input)-1)]
