@@ -7,6 +7,5 @@ getFeeds=function(input=input){
   #   lists=LIST[is.element(names(LIST),lists)]
   #   lists=gsub("feed://","http://",lists)
   #   list(channel=paste(lists,collapse=""))
-  #   list(channel=input)
-  list(channel=getwd())
+  list(channel=input)
 }

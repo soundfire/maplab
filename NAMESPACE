@@ -1,3 +1,4 @@
 export(hello)
 export(getFeeds)
 export(drawMap)
+export(Data)
