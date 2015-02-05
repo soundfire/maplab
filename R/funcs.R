@@ -7,17 +7,17 @@ library(XML)
 library(RColorBrewer)
 library(geosphere)
 ##########################################################################
-LIST=list("New York Times"="http://rss.nytimes.com/services/xml/rss/nyt/World.xml",
+LIST=list("NYT"="http://rss.nytimes.com/services/xml/rss/nyt/World.xml",
           "BBC"="http://feeds.bbci.co.uk/news/world/rss.xml",
-          "DW"="http://rss.dw.de/rdf/rss-en-all",
-          "Wahington Post"="http://feeds.washingtonpost.com/rss/homepage",
+          "DW" ="http://rss.dw.de/rdf/rss-en-all",
+          "WP" ="http://feeds.washingtonpost.com/rss/homepage",
           "CNN"="http://rss.cnn.com/rss/edition.rss",
-          "Al Jazeera"="http://www.aljazeera.com/Services/Rss/?PostingId=2007731105943979989",
-          "The Independent"="http://rss.feedsportal.com/c/266/f/3503/index.rss",
+          "AJE"="http://www.aljazeera.com/Services/Rss/?PostingId=2007731105943979989",
+          "IND"="http://rss.feedsportal.com/c/266/f/3503/index.rss",
           "VOA"="http://www.voanews.com/api/epiqq",
           "NPR"="http://www.npr.org/rss/rss.php?id=1001",
           "WSJ"="http://online.wsj.com/xml/rss/3_7085.xml",
-          "The Guardian"="http://feeds.theguardian.com/theguardian/world/rss")
+          "GUA"="http://feeds.theguardian.com/theguardian/world/rss")
 ##########################################################################
 getFeeds=function(...){
   lists=c("feed://rss.nytimes.com/services/xml/rss/nyt/World.xml",

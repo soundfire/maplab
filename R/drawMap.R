@@ -94,6 +94,7 @@ drawMap=function(input,width="100%",height="100%"){
     return(out)
   }
   #####################################################
+  load(file="R/Data.RData")
   map=Leaflet$new()
   map$set(width=width,height=height)
   map$fullScreen(TRUE)
@@ -102,10 +103,11 @@ drawMap=function(input,width="100%",height="100%"){
   #   map$tileLayer(provider='OpenCycleMap')
   #   map$tileLayer(provider='MapQuestOpen')
   #   map$tileLayer(provider='Esri')
-  maxTime=input$maxTime
-  lists=input$selectFeeds
+  maxTime=input[length(input)]
+  lists=input[1:(length(input)-1)]
+  
   lists=gsub("feed://","http://",lists)
-  auxnames=getNames()
+  
   docs=mineFeeds(auxnames,lists,maxTime)
   hits=which(rowSums(docs$Hit)>0)
   sPDF=getMap()  
