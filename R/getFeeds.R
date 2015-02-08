@@ -1,7 +1,7 @@
 #' @export
 #' @param 
 getFeeds=function(input=input){
-  
+  data(Data)
   library(rCharts)
   library(XML)
   library(RColorBrewer)
@@ -97,15 +97,104 @@ getFeeds=function(input=input){
     return(out)
   }
   #####################################################
-  
-  
-  data(Data)
   maxTime=input[length(input)]
   lists=input[1:(length(input)-1)]
   lists=LIST[is.element(names(LIST),lists)]
   lists=gsub("feed://","http://",lists)
-  
   docs=mineFeeds(auxnames,lists,maxTime)
   hits=which(rowSums(docs$Hit)>0)
-  list(channel=paste(hits,collapse=""))
+  sPDF=getMap()  
+  palette1=colorRampPalette(brewer.pal(n=9,name='YlGnBu')[3:9])(max(rowSums(docs$Hit)))
+  if (!is.null(docs$CorrVec$score)){
+    palette2=colorRampPalette(brewer.pal(n=9,name='Reds')[6:9])(max(docs$CorrVec$score))
+  }
+  json='{"type":"FeatureCollection","features":['
+  for (i in hits){
+    type=length(sPDF@polygons[[i]]@Polygons)
+    if (type==1){
+      xy=sPDF@polygons[[i]]@Polygons[[1]]@coords
+      aux=paste('{"type":"Feature",
+                "properties":{
+                "region_id":',i,',
+                "region_hits":',rowSums(docs$Hit)[i],',
+                "region_name": "',auxnames[i,1],'",
+                "style":{
+                "strokeWidth": "1px",
+                "strokeOpacity": 0.1,
+                "fillOpacity": 0.4,
+                "color":"',palette1[rowSums(docs$Hit)[i]],'"}},
+                "geometry":{
+                "type":"Polygon","coordinates":  [',RJSONIO::toJSON(xy),']  }},')  
+    } else {
+      xy=NULL
+      for (j in 1:type){
+        xy=paste(xy,RJSONIO::toJSON(sPDF@polygons[[i]]@Polygons[[j]]@coords),sep='],[')
+      }
+      xy=paste(substr(xy,3,nchar(xy)),']')
+      aux=paste('{"type":"Feature",
+              "properties":{
+              "region_id":',i,',
+              "region_hits":',rowSums(docs$Hit)[i],',
+              "region_name": "',auxnames[i,1],'",
+              "style":{
+              "strokeWidth": "1px",
+              "strokeOpacity": 0.1,
+              "fillOpacity": 0.4,
+              "color":"',palette1[rowSums(docs$Hit)[i]],'"}},
+              "geometry":{
+              "type":"MultiPolygon","coordinates":  [',xy,']  }},')  
+    }
+    json=paste(json,aux)
+    cen=c(sPDF$LON[i],sPDF$LAT[i])
+    cen=rbind(cen,cen+rnorm(2,sd=1e-9))
+    aux=paste('{"type":"Feature",
+            "properties":{
+            "region_name": "',auxnames[i,1],'",
+            "region_hits":',rowSums(docs$Hit)[i],',
+            "style":{
+            "opacity": 1,
+            "weight": ',(rowSums(docs$Hit)[i]*5.5)^(0.8),',
+            "color":"red"}},
+            "geometry":{
+            "type":"LineString","coordinates":  ',RJSONIO::toJSON(cen),'  }},')
+    json=paste(json,aux)
+    aux=paste('{"type":"Feature",
+            "properties":{
+            "region_name": "',auxnames[i,1],'",
+            "region_hits":',rowSums(docs$Hit)[i],',
+            "style":{
+            "opacity": 0.8,
+            "weight": ',(rowSums(docs$Hit)[i]*4)^(0.8),',
+            "color":"black"}},
+            "geometry":{
+            "type":"LineString","coordinates":  ',RJSONIO::toJSON(cen),'  }},')
+    json=paste(json,aux)
+    kors=c(na.omit(c(pmatch(auxnames[i,1],docs$CorrVec$country),
+                     pmatch(auxnames[i,1],docs$CorrVec$country2))))
+    kors=c(which(!is.na(lapply(docs$CorrVec$country,function(x)pmatch(auxnames[i,1],x)))),
+           which(!is.na(lapply(docs$CorrVec$country2,function(x)pmatch(auxnames[i,1],x)))))
+    print(paste(auxnames[i,1],docs$CorrVec$country[kors]))
+    if (length(kors)>0){
+      for (j in 1:length(kors)){
+        xy=bezier.uv.arc(as.numeric(docs$CorrVec[kors[j],5:6]),as.numeric(docs$CorrVec[kors[j],3:4]))
+        colnames(xy)=NULL
+        aux=paste('{"type":"Feature",
+                "properties":{
+                "style":{
+                "weight":',docs$CorrVec$score[kors[j]]*2.2,',
+                "opacity": 0.05,
+                "color":"',palette2[docs$CorrVec$score[kors[j]]],'"},
+                "region_id":',i,',
+                "region_hits":',docs$CorrVec$score[kors[j]],'},
+                "geometry":{
+                "type":"LineString","coordinates":  ',RJSONIO::toJSON(data.matrix(xy)),'  }},')
+        json=paste(json,aux)
+      }
+    }
+  }
+  
+  
+  
+  
+  list(channel=paste(json,collapse=""))
 }
