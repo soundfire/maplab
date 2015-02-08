@@ -155,7 +155,7 @@ getFeeds=function(input=input){
   if (!is.null(docs$CorrVec$score)){
     palette2=colorRampPalette(brewer.pal(n=9,name='Reds')[6:9])(max(docs$CorrVec$score))
   }
-  json='{"type":"FeatureCollection","features":['
+  json='[{"type":"FeatureCollection","features":['
   for (i in hits){
     type=length(sPDF@polygons[[i]]@Polygons)
     if (type==1){
@@ -239,7 +239,7 @@ getFeeds=function(input=input){
       }
     }
   }
-  json=paste(substr(json,1,nchar(json)-1),']}')
+  json=paste(substr(json,1,nchar(json)-1),']}]')
   
   
   
