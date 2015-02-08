@@ -97,6 +97,52 @@ getFeeds=function(input=input){
     return(out)
   }
   #####################################################
+  bezier.curve <- function(p1, p2, p3) {
+    n <- seq(0,1,length.out=50)
+    bx <- (1-n)^2 * p1[[1]] +
+      (1-n) * n * 2 * p3[[1]] +
+      n^2 * p2[[1]]
+    by <- (1-n)^2 * p1[[2]] +
+      (1-n) * n * 2 * p3[[2]] +
+      n^2 * p2[[2]]
+    data.frame(lon=bx, lat=by)
+  }
+  bezier.uv.arc <- function(p1, p2) {
+    # Get unit vector from P1 to P2
+    u <- p2 - p1
+    u <- u / sqrt(sum(u*u))
+    d <- sqrt(sum((p1-p2)^2))
+    # Calculate third point for spline
+    m <- d / 2
+    h <- floor(d * .2)
+    # Create new points in rotated space 
+    pp1 <- c(0,0)
+    pp2 <- c(d,0)
+    pp3 <- c(m, h)
+    mx <- as.matrix(bezier.curve(pp1, pp2, pp3))
+    # Now translate back to original coordinate space
+    theta <- acos(sum(u * c(1,0))) * sign(u[2])
+    ct <- cos(theta)
+    st <- sin(theta)
+    tr <- matrix(c(ct,  -1 * st, st, ct),ncol=2)
+    tt <- matrix(rep(p1,nrow(mx)),ncol=2,byrow=TRUE)
+    points <- tt + (mx %*% tr)
+    tmp.df <- data.frame(points)
+    colnames(tmp.df) <- c("lon","lat")
+    tmp.df
+  }
+  bezier.uv.merc.arc <- function(p1, p2) {
+    # Do a mercator projection of the latitude
+    # coordinates
+    pp1 <- p1
+    pp2 <- p2
+    pp1[2] <- asinh(tan(p1[2]/180 * pi))/pi * 180
+    pp2[2] <- asinh(tan(p2[2]/180 * pi))/pi * 180
+    arc <- bezier.uv.arc(pp1,pp2)
+    arc$lat <-  atan(sinh(arc$lat/180 * pi))/pi * 180
+    arc
+  }
+  #####################################################
   maxTime=input[length(input)]
   lists=input[1:(length(input)-1)]
   lists=LIST[is.element(names(LIST),lists)]
