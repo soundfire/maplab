@@ -8,4 +8,4 @@ getFeeds=function(input=input){
   lists=gsub("feed://","http://",lists)
   list(channel=paste(lists,collapse=""))
   # list(channel="yeh")
-} 
+}
