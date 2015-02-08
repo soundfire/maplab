@@ -192,7 +192,7 @@ getFeeds=function(input=input){
       }
     }
   }
-  
+  json=paste(substr(json,1,nchar(json)-1),']}')
   
   
   
