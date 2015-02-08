@@ -2,11 +2,12 @@
 #' @param 
 getFeeds=function(input=input){
   data(Data)
-  library(rCharts)
   library(XML)
-  library(RColorBrewer)
+  library(RJSONIO)
+  library(rCharts)
   library(geosphere)
   library(rworldmap)
+  library(RColorBrewer)
   #####################################################
   mineFeeds=function(auxnames,lists,maxTime){
     Sys.setlocale("LC_TIME", "C")
