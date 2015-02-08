@@ -240,7 +240,7 @@ getFeeds=function(input=input){
     }
   }
   json=paste(substr(json,1,nchar(json)-1),']}]')
-  
+  json=gsub("\\n","",json)
   
   
   list(channel=paste(json,collapse=""))
