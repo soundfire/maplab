@@ -57,7 +57,7 @@ getFeeds=function(input=input){
           doc_=gsub("," ,""  ,doc_)
           matches=unique(auxnames$index[
             which(sapply(paste(auxnames$name," ",sep=""),regexpr,doc_,ignore.case=F)>-1)])
-          #         print(matches)
+         
           CORR[matches,matches]=CORR[matches,matches]+1
           aux[matches,i]=aux[matches,i]+1
           Doc=c(Doc,doc_)
@@ -241,7 +241,5 @@ getFeeds=function(input=input){
   }
   json=paste(substr(json,1,nchar(json)-1),']}]')
   json=gsub("\\n","",json)
-  
-  
   list(channel=paste(json,collapse=""))
 }
