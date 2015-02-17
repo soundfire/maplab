@@ -59,8 +59,10 @@ getFeeds=function(input=input){
             which(sapply(paste(auxnames$name," ",sep=""),regexpr,doc_,ignore.case=F)>-1)])
           CORR[matches,matches]=CORR[matches,matches]+1
           aux[matches,i]=aux[matches,i]+1
-          Doc=c(Doc,doc_)
-          DOCS=c(DOCS,doc_)
+          print(matches)
+          doc_=data.frame(title=doc_,adrs=doc[j]$item$guid$text,match=ifelse(length(matches)>0,matches,0))
+          # Doc=c(Doc,doc_)
+          DOCS=rbind(DOCS,doc_)
         }
       }
       print(paste(sum(aux),lists[i]))
@@ -156,6 +158,9 @@ getFeeds=function(input=input){
   }
   json='[{"type":"FeatureCollection","features":['
   for (i in hits){
+    crit=docs$Docs$match==i
+    pops=paste(paste("<a href=",docs$Docs$adrs,"target='_blank'>",
+                     docs$Docs$title,"</a>",sep=""),collapse="<br><br>")
     type=length(sPDF@polygons[[i]]@Polygons)
     if (type==1){
       xy=sPDF@polygons[[i]]@Polygons[[1]]@coords
@@ -165,6 +170,7 @@ getFeeds=function(input=input){
                 "region_hits":',rowSums(docs$Hit)[i],',
                 "region_name": "',auxnames[i,1],'",
                 "style":{
+                "popup": "<p> ', pops ,' </p>",
                 "strokeWidth": "1px",
                 "strokeOpacity": 0.1,
                 "fillOpacity": 0.4,
@@ -183,6 +189,7 @@ getFeeds=function(input=input){
               "region_hits":',rowSums(docs$Hit)[i],',
               "region_name": "',auxnames[i,1],'",
               "style":{
+              "popup": "<p> ', pops ,' </p>",
               "strokeWidth": "1px",
               "strokeOpacity": 0.1,
               "fillOpacity": 0.4,
