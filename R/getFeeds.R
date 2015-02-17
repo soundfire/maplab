@@ -159,8 +159,8 @@ getFeeds=function(input=input){
   json='[{"type":"FeatureCollection","features":['
   for (i in hits){
     crit=docs$Docs$match==i
-    pops=paste(paste("<a href='",docs$Docs$adrs[crit],"'target='_blank'>",
-                     as.character(docs$Docs$title[crit]),"</a>",sep=""),collapse="<br><br>")
+    pops=paste(paste("<a href='",docs$Docs$adrs[crit],"' target='_blank'>'",
+                     as.character(docs$Docs$title[crit]),"'</a>",sep=""),collapse="<br><br>")
     type=length(sPDF@polygons[[i]]@Polygons)
     if (type==1){
       xy=sPDF@polygons[[i]]@Polygons[[1]]@coords
