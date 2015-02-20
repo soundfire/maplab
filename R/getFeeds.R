@@ -50,17 +50,21 @@ getFeeds=function(input=input){
         if (datumaux&!is.null(doc_)){
           doc_=gsub(">" ,"> ",doc_)
           doc_=strsplit(doc_,"<a")[[1]][1]
-          doc_=strsplit(doc_,"<img")[[1]][1]
+          doc__=strsplit(doc_,"<p>")[[1]][2]
+          doc__=strsplit(doc_,"</p>")[[1]][1]
+          doc_=ifelse(is.na(doc__),doc_,doc__)
+          # # doc_=strsplit(doc_,"<img")[[1]][1]
           doc_=gsub("-" ," " ,doc_)
           doc_=gsub("\n"," " ,doc_)
           doc_=gsub("\""," " ,doc_)
           doc_=gsub("," ,""  ,doc_)
+          # print(doc_)
           matches=unique(auxnames$index[
             which(sapply(paste(auxnames$name," ",sep=""),regexpr,doc_,ignore.case=F)>-1)])
           CORR[matches,matches]=CORR[matches,matches]+1
           aux[matches,i]=aux[matches,i]+1
           print(matches)
-          doc_=data.frame(title=doc_,adrs=doc[j]$item$guid$text,match=ifelse(length(matches)>0,matches,0))
+          doc_=data.frame(title=doc_,adrs=doc[j]$item$link,match=ifelse(length(matches)>0,matches,0))
           # Doc=c(Doc,doc_)
           DOCS=rbind(DOCS,doc_)
         }
